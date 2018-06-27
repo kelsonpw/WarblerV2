@@ -238,6 +238,11 @@ def root():
     return render_template('home.html', messages=messages)
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
 # https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
 @app.after_request
 def add_header(r):
