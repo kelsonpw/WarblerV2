@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
-from forms import UserForm, LoginForm, MessageForm
+from forms import UserForm, LoginForm, MessageForm, UserEditForm
 from decorators import ensure_correct_user
 
 app = Flask(__name__)
@@ -156,7 +156,7 @@ def users_edit(user_id):
     found_user = User.query.get(user_id)
     return render_template(
         'users/edit.html',
-        form=UserForm(obj=found_user),
+        form=UserEditForm(obj=found_user),
         user_id=found_user.id)
 
 
@@ -165,12 +165,16 @@ def users_edit(user_id):
 @ensure_correct_user
 def users_update(user_id):
     found_user = User.query.get(user_id)
-    form = UserForm(request.form)
+    form = UserEditForm(request.form)
     if form.validate():
         if User.authenticate(found_user.username, form.password.data):
             found_user.username = form.username.data
             found_user.email = form.email.data
             found_user.image_url = form.image_url.data or "/static/images/default-pic.png"
+            found_user.location = form.location.data
+            found_user.bio = form.bio.data
+            found_user.header_image_url = form.header_image_url.data or "/static/images/warbler-hero.jpg"
+
             db.session.add(found_user)
             db.session.commit()
             return redirect(url_for('users_show', user_id=user_id))
@@ -233,8 +237,12 @@ def messages_destroy(user_id, message_id):
 def root():
     messages = []
     if current_user.is_authenticated:
-        messages = Message.query.order_by(
-            Message.timestamp.desc()).limit(100).all()
+        following = current_user.following
+        current_following = [follow.id for follow in following]
+        messages = Message.query.filter(
+            (Message.user_id.in_(current_following))
+            | (Message.user_id == current_user.id)).order_by(
+                Message.timestamp.desc()).limit(100).all()
     return render_template('home.html', messages=messages)
 
 
