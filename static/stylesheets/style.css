@@ -536,3 +536,9 @@ nav + .container {
 .error-actions .btn {
   margin: auto;
 }
+/* style for following card */
+
+p.card-bio {
+  margin: 2em 10px 0;
+  font-size: small;
+}
