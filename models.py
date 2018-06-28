@@ -22,6 +22,14 @@ FollowersFollowee = db.Table(
               db.ForeignKey('users.id', ondelete="cascade")),
     db.CheckConstraint('follower_id != followee_id', name="no_self_follow"))
 
+UserLikes = db.Table('user_likes', db.Column(
+    'id', db.Integer, primary_key=True),
+                     db.Column('user_id', db.Integer,
+                               db.ForeignKey('users.id', ondelete="cascade")),
+                     db.Column('message_id', db.Integer,
+                               db.ForeignKey(
+                                   'messages.id', ondelete="cascade")))
+
 
 class User(db.Model, UserMixin):
 
@@ -36,6 +44,11 @@ class User(db.Model, UserMixin):
     location = db.Column(db.Text)
     password = db.Column(db.Text)
     messages = db.relationship('Message', backref='user', lazy='dynamic')
+    liked_messages = db.relationship(
+        'Message',
+        secondary=UserLikes,
+        backref=db.backref('users_liked', lazy='dynamic'),
+        lazy='dynamic')
     followers = db.relationship(
         "User",
         secondary=FollowersFollowee,
@@ -52,6 +65,9 @@ class User(db.Model, UserMixin):
 
     def is_following(self, user):
         return bool(self.following.filter_by(id=user.id).first())
+
+    def user_likes(self, message):
+        return bool(self.liked_messages.filter_by(id=message.id).first())
 
     @staticmethod
     def hash_password(plaintext_pw):

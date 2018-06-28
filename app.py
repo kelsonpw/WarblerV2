@@ -233,6 +233,22 @@ def messages_destroy(user_id, message_id):
     return redirect(url_for('users_show', user_id=user_id))
 
 
+@app.route(
+    '/users/<int:user_id>/messages/<int:message_id>/like',
+    methods=["POST", "DELETE"])
+@login_required
+def messages_show_like(user_id, message_id):
+    message = Message.query.get(message_id)
+    if request.method == 'POST':
+        current_user.liked_messages.append(message)
+    else:
+        current_user.liked_messages.remove(message)
+    db.session.add(current_user)
+    db.session.commit()
+    return redirect(
+        url_for('messages_show', user_id=user_id, message_id=message.id))
+
+
 @app.route('/')
 def root():
     messages = []

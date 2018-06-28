@@ -542,3 +542,16 @@ p.card-bio {
   margin: 2em 10px 0;
   font-size: small;
 }
+
+/* style for message likes */
+
+.like-btn {
+  float: right;
+  background: none;
+  padding: 0px;
+  border: none;
+}
+
+/* .like-btn {
+  float: right;
+} */
