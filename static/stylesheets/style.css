@@ -552,6 +552,13 @@ p.card-bio {
   border: none;
 }
 
-/* .like-btn {
+.like-form {
+  position: relative;
+  z-index: 3;
+  margin-top: auto;
+  margin-left: auto;
   float: right;
-} */
+  background: none;
+  padding: 0px;
+  border: none;
+}

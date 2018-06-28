@@ -13,6 +13,19 @@
         <span class="text-muted">{{ message.timestamp.strftime('%d %B %Y') }}</span>
         <p>{{ message.text }}</p>
       </div>
+      {% if current_user.user_likes(message) %}
+        <form class="like-form" method="POST" action="{{ url_for('user_show_like', message_id=message.id, user_id=message.user.id)}}?_method=DELETE">
+          <button type="submit" id="like-message" class="like-btn">
+             <i class="fas fa-thumbs-up"></i>
+          </button>
+        </form>
+      {% else %}
+        <form class="like-form" method="POST" action="{{ url_for('user_show_like', message_id=message.id, user_id=message.user.id)}}">
+          <button type="submit" id="like-message" class="like-btn">
+            <i class="far fa-thumbs-up"></i>
+          </button>
+        </form>
+      {% endif %}
     </li>
     {% endfor %}
   </ul>
