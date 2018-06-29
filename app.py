@@ -16,7 +16,7 @@ if os.environ.get('ENV') == 'production':
     app.config['DEBUG'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 else:
-    app.config['DEBUG'] = True
+    app.config['DEBUG'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://localhost/warbler_db'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
