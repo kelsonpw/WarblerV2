@@ -1,8 +1,8 @@
 # Warbler
 
-A Twitter clone with a Rithm spin.
+A Twitter clone.
 
-[Live site](https://warbler-app.herokuapp.com/)
+[Live site](https://thekelsonwarner.com/WarblerV2/)
 
 ### Installation
 
