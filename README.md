@@ -2,7 +2,7 @@
 
 A Twitter clone.
 
-[Live site](https://thekelsonwarner.com/WarblerV2/)
+[Live site](https://warbler-v2.herokuapp.com/)
 
 ### Installation
 
